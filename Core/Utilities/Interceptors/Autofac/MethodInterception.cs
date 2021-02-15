@@ -19,7 +19,7 @@ namespace Core.Utilities.Interceptors.Autofac
             {
                 invocation.Proceed();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 isSuccess = false;
                 OnException(invocation);

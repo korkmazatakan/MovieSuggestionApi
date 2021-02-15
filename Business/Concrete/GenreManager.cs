@@ -24,6 +24,7 @@ namespace Business.Concrete
             return new SuccessDataResult<Genre>(_genreDal.Get(genre => genre.Id == id));
         }
 
+        
         public IDataResult<List<Genre>> GetAll()
         {
             return new SuccessDataResult<List<Genre>>(_genreDal.GetList().ToList());

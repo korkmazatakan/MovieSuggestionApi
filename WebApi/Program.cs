@@ -9,14 +9,29 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
+using NLog.Web;
+using System.IO;
+using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
+using System.Data;
+using Serilog;
+using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
+using Serilog.Events;
+using Core.CrossCuttingConcerns.Logging.Log4Net;
 
 namespace WebApi
 {
     public class Program
     {
+
+        
         public static void Main(string[] args)
         {
+
+            LoggerServiceBase.serilogConfiguration();
+
             CreateHostBuilder(args).Build().Run();
+
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

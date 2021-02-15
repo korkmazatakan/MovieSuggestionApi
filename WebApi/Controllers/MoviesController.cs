@@ -5,18 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Concrete;
+using Microsoft.Extensions.Logging;
+using Core.Entities;
+using Core.Entities.Concrete;
 
 namespace WebApi.Controllers
 {
     [Route( "api/[controller]")]
     [ApiController]
-    public class MoviesController : Controller
+    public class MoviesController : Controller,IController
     {
         private IMovieService _movieService;
+
 
         public MoviesController(IMovieService movieService)
         {
             _movieService = movieService;
+
         }
         [HttpGet("getall")]
         public IActionResult GetAll()

@@ -13,7 +13,7 @@ using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns;
-using Core.CrossCuttingConcerns.Logging.Log4Net.Loggers;
+using Core.CrossCuttingConcerns.Logging.Log4Net;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -23,15 +23,17 @@ namespace Business.Concrete
     public class MovieManager:IMovieService
     {
         private IMovieDal _movieDal;
+        private LoggerServiceBase loggerServiceBase;
+
 
         public MovieManager(IMovieDal movieDal)
         {
             _movieDal = movieDal;
         }
-        [PerformanceAspect(2)]
+        //[PerformanceAspect(2)]
         //[SecuredOperation("Movie.List")]
-        [CacheAspect(1)]
-        [LogAspect(typeof(FileLogger))]
+        [CacheAspect(5)]
+        [LogAspect()]
         public IDataResult<List<Movie>> GetAll() => new SuccessDataResult<List<Movie>>(_movieDal.GetList().ToList());
 
         public IDataResult<Movie> GetById(int Id)
@@ -39,11 +41,13 @@ namespace Business.Concrete
             return new SuccessDataResult<Movie>(_movieDal.Get(m => m.Id == Id));
         }
 
+        [LogAspect()]
         public IDataResult<List<Movie>> GetListByGenre(int GenreId)
         {
             return new SuccessDataResult<List<Movie>>(_movieDal.GetList(m => m.GenreId == GenreId).ToList());
         }
 
+        [LogAspect()]
         public IDataResult<List<Movie>> GetListByDirector(int DirectorId)
         {
             return new SuccessDataResult<List<Movie>>(_movieDal.GetList(m => m.DirectorId == DirectorId).ToList());
@@ -51,7 +55,8 @@ namespace Business.Concrete
 
         //[ValidationAspect(typeof(MovieValidator), Priority = 1)]
         //[CacheRemoveAspect("IMovieService.Get")]
-        [LogAspect(typeof(FileLogger))]
+        //[SecuredOperation("Movie.Add")]
+        [LogAspect()]
         /*[CacheRemoveAspect("IGenreService.Get")] You can use this aspect attribute how many times you want */
         public IResult Add(Movie movie)
         {
@@ -59,12 +64,14 @@ namespace Business.Concrete
             return new SuccessResult(Messages.MovieAdded);
         }
 
+        [LogAspect()]
         public IResult Delete(Movie movie)
         {
             _movieDal.Delete(movie);
             return new SuccessResult(Messages.MovieDeleted);
         }
 
+        [LogAspect()]
         public IResult Update(Movie movie)
         {
             _movieDal.Update(movie);

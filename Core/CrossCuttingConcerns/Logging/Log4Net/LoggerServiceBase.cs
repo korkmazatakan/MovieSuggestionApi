@@ -1,73 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Data;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Xml;
+using Core.Entities;
 using log4net;
 using log4net.Repository;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Events;
+using Serilog.Sinks.MSSqlServer;
+using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
+
 
 namespace Core.CrossCuttingConcerns.Logging.Log4Net
 {
     public class LoggerServiceBase
     {
-        private ILog _log;
-        public LoggerServiceBase(string name)
+        
+        public LoggerServiceBase()
         {
-            XmlDocument xmlDocument = new XmlDocument();
-            xmlDocument.Load(File.OpenRead("log4net.config"));
 
-            ILoggerRepository loggerRepository = LogManager.CreateRepository(Assembly.GetEntryAssembly(),
-                typeof(log4net.Repository.Hierarchy.Hierarchy));
-            log4net.Config.XmlConfigurator.Configure(loggerRepository, xmlDocument["log4net"]);
-
-            _log = LogManager.GetLogger(loggerRepository.Name, name);
         }
 
-        public bool IsInfoEnabled => _log.IsInfoEnabled;
-        public bool IsDebugEnabled => _log.IsDebugEnabled;
-        public bool IsErrorEnabled => _log.IsErrorEnabled;
-        public bool IsFatalEnabled => _log.IsFatalEnabled;
-        public bool IsWarnEnabled => _log.IsWarnEnabled;
+        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", optional: true)
+            .Build();
 
-        public void Info(object logMessage)
+        public static void serilogConfiguration()
         {
-            if (IsInfoEnabled)
+            string connectionString = Configuration.GetConnectionString("SqlConnectionString");
+
+            var columnOptions = new ColumnOptions
             {
-                _log.Info(logMessage);
-            }
+                AdditionalColumns = new Collection<SqlColumn>
+                { new SqlColumn("Username", SqlDbType.VarChar) }
+            };
+
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.MSSqlServer(connectionString, sinkOptions: new SinkOptions { TableName = "webApiLogs" }, null, null, LogEventLevel.Information, null, columnOptions: columnOptions, null, null)
+                .CreateLogger();
         }
 
-        public void Debug(object logMessage)
+
+
+        public void Info(string logMessage)
         {
-            if (IsDebugEnabled)
-            {
-                _log.Debug(logMessage);
-            }
+            Log.Logger.Information(logMessage);
         }
 
-        public void Error(object logMessage)
+        public void Debug(string logMessage)
         {
-            if (IsErrorEnabled)
-            {
-                _log.Error(logMessage);
-            }
+            Log.Logger.Debug(logMessage);
         }
 
-        public void Fatal(object logMessage)
+        public void Error(string logMessage)
         {
-            if (IsFatalEnabled)
-            {
-                _log.Fatal(logMessage);
-            }
+            Log.Logger.Error(logMessage);
         }
 
-        public void Warn(object logMessage)
+        public void Fatal(string logMessage)
         {
-            if (IsWarnEnabled)
-            {
-                _log.Warn(logMessage);
-            }
+            Log.Logger.Fatal(logMessage);
+        }
+
+        public void Warn(string logMessage)
+        {
+            Log.Logger.Warning(logMessage);
         }
     }
 }
