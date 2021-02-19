@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Castle.DynamicProxy;
+using Core.Aspects.Autofac.Logging;
 
 namespace Core.Utilities.Interceptors.Autofac
 {
@@ -17,6 +18,7 @@ namespace Core.Utilities.Interceptors.Autofac
                 (true);
 
             classAttributes.AddRange(methodAttributes);
+            classAttributes.Add(new ExceptionLogAspect());
 
             return classAttributes.OrderBy(x => x.Priority).ToArray();
 

@@ -53,9 +53,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Movie>>(_movieDal.GetList(m => m.DirectorId == DirectorId).ToList());
         }
 
-        //[ValidationAspect(typeof(MovieValidator), Priority = 1)]
-        //[CacheRemoveAspect("IMovieService.Get")]
-        //[SecuredOperation("Movie.Add")]
+        [ValidationAspect(typeof(MovieValidator), Priority = 1)]
+        [CacheRemoveAspect("IMovieService.Get")]
+        [SecuredOperation("Movie.Add")]
         [LogAspect()]
         /*[CacheRemoveAspect("IGenreService.Get")] You can use this aspect attribute how many times you want */
         public IResult Add(Movie movie)

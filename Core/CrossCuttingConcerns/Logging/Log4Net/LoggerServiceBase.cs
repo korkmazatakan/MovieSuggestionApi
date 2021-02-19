@@ -39,13 +39,15 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
 
             var columnOptions = new ColumnOptions
             {
+                Exception = new ColumnOptions.ExceptionColumnOptions(),
                 AdditionalColumns = new Collection<SqlColumn>
                 { new SqlColumn("Username", SqlDbType.VarChar) }
             };
 
             Log.Logger = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .WriteTo.MSSqlServer(connectionString, sinkOptions: new SinkOptions { TableName = "webApiLogs" }, null, null, LogEventLevel.Information, null, columnOptions: columnOptions, null, null)
+                .WriteTo.MSSqlServer
+                (connectionString, sinkOptions: new SinkOptions { TableName = "webApiLogs" },null, null, LogEventLevel.Information, null, columnOptions: columnOptions, null, null)
                 .CreateLogger();
         }
 
@@ -54,6 +56,7 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
         public void Info(string logMessage)
         {
             Log.Logger.Information(logMessage);
+            
         }
 
         public void Debug(string logMessage)
@@ -61,9 +64,9 @@ namespace Core.CrossCuttingConcerns.Logging.Log4Net
             Log.Logger.Debug(logMessage);
         }
 
-        public void Error(string logMessage)
+        public void Error(string logMessage, Exception ex)
         {
-            Log.Logger.Error(logMessage);
+            Log.Logger.Error(ex,logMessage);
         }
 
         public void Fatal(string logMessage)
