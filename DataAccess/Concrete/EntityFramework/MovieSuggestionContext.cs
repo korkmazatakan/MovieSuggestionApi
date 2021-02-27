@@ -22,6 +22,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<InMovieImage> InMovieImages { get; set; }
 
     }
 }

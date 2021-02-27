@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Abstract
 {
@@ -12,7 +13,7 @@ namespace Business.Abstract
         IDataResult<Movie> GetById(int id);
         IDataResult<List<Movie>> GetListByGenre(int genre_id);
         IDataResult<List<Movie>> GetListByDirector(int director_id);
-        IResult Add(Movie movie);
+        IResult Add(MovieAddDto movie);
         IResult Delete(Movie movie);
         IResult Update(Movie movie);
         IResult TransactionTest(Movie movie);

@@ -8,6 +8,7 @@ using Entities.Concrete;
 using Microsoft.Extensions.Logging;
 using Core.Entities;
 using Core.Entities.Concrete;
+using Entities.Dtos;
 
 namespace WebApi.Controllers
 {
@@ -72,7 +73,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(Movie movie)
+        public IActionResult Add(MovieAddDto movie)
         {
             var result = _movieService.Add(movie);
             if (result.Success)

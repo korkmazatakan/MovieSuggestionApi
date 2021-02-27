@@ -22,7 +22,7 @@ namespace Core.Aspects.Autofac.Logging
 
         protected override void OnException(IInvocation invocation, Exception ex)
         {
-            _loggerServiceBase.Error("Internal server error",ex);
+            _loggerServiceBase.Error("Error : " + ex.Message,ex);
         }
 
     }

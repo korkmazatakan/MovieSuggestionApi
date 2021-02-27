@@ -46,5 +46,6 @@ namespace Business.Concrete
             _directorDal.Update(director);
             return new SuccessResult(Messages.DirectorUpdated);
         }
+
     }
 }

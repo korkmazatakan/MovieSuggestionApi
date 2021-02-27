@@ -1,16 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-using Core.Entities;
-using log4net;
-using log4net.Repository;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;

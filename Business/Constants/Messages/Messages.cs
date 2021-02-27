@@ -19,11 +19,17 @@ namespace Business.Constants.Messages
         public static string PasswordError = "Password is wrong";
         public static string SuccessfulLogin = "Login successfuly";
         public static string UserAlreadyExist = "User already exist";
-        public static string UserCreatedSuccessfuly = "User created Successfuly";
+        public static string UserCreatedSuccessfuly = "User created successfuly";
         public static string TokenCreated = "Access token created successfuly";
         public static string GenreAdded = "Genre added successfuly";
         public static string GenreDeleted = "Genre deleted successfuly";
-        public static string GenreUpdated = "Genre updated successfuly";
+        public static string GenreUpdated = "Genre updated successfuly"; 
         public static string PermissionDenied = "Permission denied";
+        public static string MovieNameAlreadyExisted = "Movie name is already existed";
+        public static string MovieAlreadyExisted = "Movie is already existed";
+        public static string DirectorAlreadyExisted = "Director is already existed";
+        public static string ImageAdded = "Image added successfuly";
+        public static string ImageDeleted = "Image deleted successfuly";
+        public static string ImageUpdated = "Image updated successfuly";
     }
 }

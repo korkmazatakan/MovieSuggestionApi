@@ -44,7 +44,7 @@ namespace Core.Aspects.Autofac.Logging
 
             }
 
-            _loggerServiceBase.Info(logDetail.MethodName + "(" + parameterType + ") ->" + parameterValue[0] +  " | "  + parameterValue[1] + " | " + parameterValue[2]  + " -> " + parameterName );
+            _loggerServiceBase.Info(logDetail.MethodName + "(" + parameterType + ") ->" + parameterValue  + " -> " + parameterName );
         }
 
         private LogDetail GetLogDetail(IInvocation invocation)

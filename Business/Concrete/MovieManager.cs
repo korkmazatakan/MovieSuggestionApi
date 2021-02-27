@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Business.Abstract;
 using Business.BusinessAspect.Autofac;
 using Business.Constants.Messages;
@@ -9,26 +7,26 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Logging;
-using Core.Aspects.Autofac.Performance;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
-using Core.CrossCuttingConcerns;
-using Core.CrossCuttingConcerns.Logging.Log4Net;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace Business.Concrete
 {
     public class MovieManager:IMovieService
     {
         private IMovieDal _movieDal;
-        private LoggerServiceBase loggerServiceBase;
+        private IDirectorService _directorService;
+        private IInMovieImageDal _inImageDal;
 
-
-        public MovieManager(IMovieDal movieDal)
+        public MovieManager(IMovieDal movieDal,IDirectorService directorService)
         {
             _movieDal = movieDal;
+            _directorService = directorService;
         }
         //[PerformanceAspect(2)]
         //[SecuredOperation("Movie.List")]
@@ -58,9 +56,22 @@ namespace Business.Concrete
         [SecuredOperation("Movie.Add")]
         [LogAspect()]
         /*[CacheRemoveAspect("IGenreService.Get")] You can use this aspect attribute how many times you want */
-        public IResult Add(Movie movie)
+        public IResult Add(MovieAddDto movie)
         {
-            _movieDal.Add(movie);
+            
+            IResult result = BusinessRules.Run(CheckMovieExist(movie.Movie));
+            if (result != null)
+            {
+                return result;
+            }
+            _movieDal.Add(movie.Movie);
+            //movie id is taken
+            
+            InMovieImage img = new InMovieImage();
+            img.ImageName = movie.images.FileName;
+            img.MovieId = movie.Movie.Id;
+            _inImageDal.Add(img);
+        
             return new SuccessResult(Messages.MovieAdded);
         }
 
@@ -87,5 +98,25 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
+
+        private IResult CheckMovieNameExist(string movieName)
+        {
+            if (_movieDal.Get(mv =>mv.Name == movieName) != null)
+            {
+                return new ErrorResult(Messages.MovieNameAlreadyExisted);
+            }
+
+            return new SuccessResult();
+        }
+        private IResult CheckMovieExist(Movie movie)
+        {
+            if (_movieDal.Get(mv => mv.Name == movie.Name && mv.DirectorId == movie.DirectorId) != null)
+            {
+                return new ErrorResult(Messages.MovieAlreadyExisted);
+            }
+
+            return new SuccessResult();
+        }
+
     }
 }
