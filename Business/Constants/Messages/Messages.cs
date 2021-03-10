@@ -31,5 +31,9 @@ namespace Business.Constants.Messages
         public static string ImageAdded = "Image added successfuly";
         public static string ImageDeleted = "Image deleted successfuly";
         public static string ImageUpdated = "Image updated successfuly";
+
+        public static string CommentAdded = "Comment added successfuly";
+        public static string CommentUpdated = "Comment updated successfuly";
+        public static string CommentDeleted= "Comment deleted successfuly";
     }
 }

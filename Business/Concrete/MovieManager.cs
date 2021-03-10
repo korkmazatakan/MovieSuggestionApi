@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Business.Abstract;
 using Business.BusinessAspect.Autofac;
@@ -49,6 +50,14 @@ namespace Business.Concrete
         public IDataResult<List<Movie>> GetListByDirector(int DirectorId)
         {
             return new SuccessDataResult<List<Movie>>(_movieDal.GetList(m => m.DirectorId == DirectorId).ToList());
+        }
+
+        public IDataResult<IList<Movie>> GetByCount(int count)
+        {
+            List<Movie> listOfMovie = _movieDal.GetList().ToList();
+            listOfMovie.Sort((x,y) =>DateTime.Compare(y.ReleaseDate,x.ReleaseDate));
+            return new SuccessDataResult<IList<Movie>>(
+                listOfMovie.Take(count).ToList());
         }
 
         [ValidationAspect(typeof(MovieValidator), Priority = 1)]

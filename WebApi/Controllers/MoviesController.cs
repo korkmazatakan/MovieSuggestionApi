@@ -36,6 +36,18 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("getbycount")]
+        public IActionResult GetByCount(int id)
+        {
+            var result = _movieService.GetByCount(5);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {

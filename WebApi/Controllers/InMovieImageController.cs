@@ -65,5 +65,21 @@ namespace WebApi.Controllers
                 return BadRequest(result.Message);
             }
         }
+
+        [HttpGet("getbymovieid")]
+        public IActionResult GetByMovieId(int movieId)
+        {
+            var result = _inMovieImageService.GetByMovieId(movieId);
+            return Ok(result);
+        }
+        [HttpGet("getbyid")]
+        public IActionResult GetById(string id)
+        {
+            var result = _inMovieImageService.GetById(id);
+            string imgName = result.Data.ImageName;
+            var image = System.IO.File.OpenRead($"wwwroot/uploads/moviecontent/{imgName}");
+            
+            return File(image, "image/jpeg");
+        }
     }
 }

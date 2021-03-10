@@ -29,6 +29,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<InMovieImageManager>().As<IInMovieImageService>();
             builder.RegisterType<EfInMovieImageDal>().As<IInMovieImageDal>();
 
+            builder.RegisterType<CommentManager>().As<ICommentService>();
+            builder.RegisterType<EfCommentDal>().As<ICommentDal>();
+
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();
 
