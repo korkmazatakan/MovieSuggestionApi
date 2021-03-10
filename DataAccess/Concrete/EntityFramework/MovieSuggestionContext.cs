@@ -12,7 +12,7 @@ namespace DataAccess.Concrete.EntityFramework
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=FilmOneri;Trusted_Connection=true");
+            optionsBuilder.UseSqlServer(@"Server=localhost,1433;Database=FilmOneri;User Id=sa;Password=change_this_password;");
         }
 
         public DbSet<Director> Directors { get; set; }

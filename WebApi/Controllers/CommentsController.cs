@@ -19,7 +19,7 @@ namespace WebApi.Controllers
             _commentService = commentService;
         }
 
-        [HttpGet("getbymovieid/{id}")]
+        [HttpGet("getbymovieid")]
         public IActionResult GetByMovieId(int id)
         {
             var result = _commentService.GetByMovieId(id);
@@ -27,7 +27,7 @@ namespace WebApi.Controllers
         }
 
         // GET api/<CommentsController>/5
-        [HttpGet("getbysubid/{id}")]
+        [HttpGet("getbysubid")]
         public IActionResult GetBySubId(int id)
         {
             var result = _commentService.GetBySubId(id);

@@ -22,12 +22,13 @@ namespace Business.Concrete
     {
         private IMovieDal _movieDal;
         private IDirectorService _directorService;
-        private IInMovieImageDal _inImageDal;
+        private IInMovieImageService _inImageDal;
 
-        public MovieManager(IMovieDal movieDal,IDirectorService directorService)
+        public MovieManager(IMovieDal movieDal,IDirectorService directorService, IInMovieImageService inImageDal)
         {
             _movieDal = movieDal;
             _directorService = directorService;
+            _inImageDal = inImageDal;
         }
         //[PerformanceAspect(2)]
         //[SecuredOperation("Movie.List")]
@@ -60,27 +61,29 @@ namespace Business.Concrete
                 listOfMovie.Take(count).ToList());
         }
 
-        [ValidationAspect(typeof(MovieValidator), Priority = 1)]
-        [CacheRemoveAspect("IMovieService.Get")]
-        [SecuredOperation("Movie.Add")]
-        [LogAspect()]
+       // [ValidationAspect(typeof(MovieValidator), Priority = 1)]
+       // [CacheRemoveAspect("IMovieService.Get")]
+      //  [SecuredOperation("Movie.Add")]
+      //  [LogAspect()]
         /*[CacheRemoveAspect("IGenreService.Get")] You can use this aspect attribute how many times you want */
-        public IResult Add(MovieAddDto movie)
-        {
+        public IResult Add(Movie movie)
+      {
+          // Movie nMovie = new Movie();
+          // nMovie.Name = movie.Name;
+          // nMovie.Description = movie.Description;
+          // nMovie.DirectorId = movie.DirectorId;
+          // nMovie.GenreId = movie.GenreId;
+          // nMovie.Poster = movie.Poster;
+          // nMovie.ReleaseDate = movie.ReleaseDate;
             
-            IResult result = BusinessRules.Run(CheckMovieExist(movie.Movie));
+            IResult result = BusinessRules.Run(CheckMovieExist(movie));
             if (result != null)
             {
                 return result;
             }
-            _movieDal.Add(movie.Movie);
+            _movieDal.Add(movie);
             //movie id is taken
-            
-            InMovieImage img = new InMovieImage();
-            img.ImageName = movie.images.FileName;
-            img.MovieId = movie.Movie.Id;
-            _inImageDal.Add(img);
-        
+
             return new SuccessResult(Messages.MovieAdded);
         }
 

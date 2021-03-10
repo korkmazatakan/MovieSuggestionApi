@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
@@ -8,7 +9,9 @@ using Entities.Concrete;
 using Microsoft.Extensions.Logging;
 using Core.Entities;
 using Core.Entities.Concrete;
+using Core.Utilities.Results;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Hosting;
 
 namespace WebApi.Controllers
 {
@@ -17,12 +20,13 @@ namespace WebApi.Controllers
     public class MoviesController : Controller,IController
     {
         private IMovieService _movieService;
+        private IWebHostEnvironment _webHostEnvironment;
 
 
-        public MoviesController(IMovieService movieService)
+        public MoviesController(IMovieService movieService, IWebHostEnvironment webHostEnvironment)
         {
             _movieService = movieService;
-
+            _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet("getall")]
         public IActionResult GetAll()
@@ -85,8 +89,46 @@ namespace WebApi.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add(MovieAddDto movie)
+        public IActionResult Add([FromForm]MovieAddDto movie)
         {
+            
+            IResult result = new SuccessResult();
+            try
+            {
+                if (!movie.PosterFile.Equals(null))
+                {
+                    string path = _webHostEnvironment.WebRootPath + "\\uploads\\moviecontent\\posters\\";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+
+                        Movie nMovie = new Movie();
+                        nMovie.Name = movie.Name;
+                        nMovie.Description = movie.Description;
+                        nMovie.Poster = Guid.NewGuid().ToString("N")  + "." + movie.PosterFile.FileName.Split(".")[1];
+                        nMovie.DirectorId = movie.DirectorId;
+                        nMovie.GenreId = movie.GenreId;
+                        nMovie.ReleaseDate = movie.ReleaseDate;
+                        
+                        using (FileStream fileStream = System.IO.File.Create(path + nMovie.Poster))
+                        {
+                            result = _movieService.Add(nMovie);
+                            movie.PosterFile.CopyTo(fileStream);
+                            fileStream.Flush();
+                        }
+                }
+                return Ok(result.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest(result.Message);
+            }
+            
+            
+            
+            
+/*
             var result = _movieService.Add(movie);
             if (result.Success)
             {
@@ -94,6 +136,7 @@ namespace WebApi.Controllers
             }
 
             return BadRequest(result.Message);
+*/
         }
         [HttpPost("update")]
         public IActionResult Update(Movie movie)
