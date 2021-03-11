@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 
 namespace WebApi.Controllers
 {
@@ -42,9 +43,21 @@ namespace WebApi.Controllers
 
         // POST api/<CommentsController>
         [HttpPost("add")]
-        public string Add(Comment comment)
+        public string Add(CommentAddDto comment)
         {
-            var result = _commentService.Add(comment);
+            //getting current user
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+            // getting username of current user
+            var username = currentUser.Identity.IsAuthenticated ? currentUser.Identity.Name : "Ziyaretçi"; 
+            
+            // creating comment
+            Comment nComment = new Comment();
+            nComment.Text = comment.Text;
+            nComment.Username = username;
+            nComment.MovieId = comment.MovieId;
+            nComment.SubCommentOf = comment.SubCommentOf;
+
+            var result = _commentService.Add(nComment);
             return result.Message;
         }
 

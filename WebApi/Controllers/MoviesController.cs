@@ -102,8 +102,7 @@ namespace WebApi.Controllers
                     {
                         Directory.CreateDirectory(path);
                     }
-
-                        Movie nMovie = new Movie();
+                    Movie nMovie = new Movie();
                         nMovie.Name = movie.Name;
                         nMovie.Description = movie.Description;
                         nMovie.Poster = Guid.NewGuid().ToString("N")  + "." + movie.PosterFile.FileName.Split(".")[1];
@@ -124,9 +123,6 @@ namespace WebApi.Controllers
             {
                 return BadRequest(result.Message);
             }
-            
-            
-            
             
 /*
             var result = _movieService.Add(movie);

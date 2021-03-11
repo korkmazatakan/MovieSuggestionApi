@@ -44,7 +44,7 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
         [HttpPost("add")]
-        [Authorize(Roles = "Director.Add")]
+       // [Authorize(Roles = "Director.Add")]
         public IActionResult Add(Director director)
         {
             var result = _directorService.Add(director);
