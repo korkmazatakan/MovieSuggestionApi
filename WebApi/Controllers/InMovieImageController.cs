@@ -32,7 +32,7 @@ namespace WebApi.Controllers
                 if (image.files.Count() > 0)
                 {
                     
-                    string path = _webHostEnvironment.WebRootPath + "\\uploads\\moviecontent\\";
+                    string path = _webHostEnvironment.WebRootPath + "/uploads/moviecontent/";
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);

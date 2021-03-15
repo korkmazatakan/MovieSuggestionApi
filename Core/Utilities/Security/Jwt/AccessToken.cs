@@ -7,6 +7,7 @@ namespace Core.Utilities.Security.Jwt
     public class AccessToken
     {
         public string Token { get; set; }
+        public int userId { get; set; }
         public DateTime Expiration { get; set; }
     }
 }

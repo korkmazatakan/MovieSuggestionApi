@@ -97,7 +97,7 @@ namespace WebApi.Controllers
             {
                 if (!movie.PosterFile.Equals(null))
                 {
-                    string path = _webHostEnvironment.WebRootPath + "\\uploads\\moviecontent\\posters\\";
+                    string path = _webHostEnvironment.WebRootPath + "/uploads/moviecontent/posters/";
                     if (!Directory.Exists(path))
                     {
                         Directory.CreateDirectory(path);

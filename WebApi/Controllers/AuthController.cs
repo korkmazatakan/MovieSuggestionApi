@@ -58,5 +58,31 @@ namespace WebApi.Controllers
 
             return BadRequest(result.Message);
         }
+        
+        [HttpGet("getbymail")]
+        public ActionResult GetByMail(string email)
+        {
+            var result = _authService.GetByMail(email);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+
+        }
+        
+        [HttpGet("getbyid")]
+        public ActionResult GetById(int id)
+        {
+            var result = _authService.GetById(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+
+        }
     }
 }

@@ -64,6 +64,19 @@ namespace Business.Concrete
 
             return new SuccessResult();
         }
+        public IDataResult<User> GetByMail(string email)
+        {
+            var result = _userService.GetByMail(email);
+            
+            return new SuccessDataResult<User>(result);
+        }
+        
+        public IDataResult<User> GetById(int id)
+        {
+            var result = _userService.GetById(id);
+            
+            return new SuccessDataResult<User>(result);
+        }
 
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {

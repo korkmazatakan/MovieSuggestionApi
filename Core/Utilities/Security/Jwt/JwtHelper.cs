@@ -37,6 +37,7 @@ namespace Core.Utilities.Security.Jwt
             return new AccessToken
             {
                 Expiration = _accessTokenExpiration,
+                userId =  user.Id,
                 Token = token
             };
         }
