@@ -41,9 +41,9 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("getbycount")]
-        public IActionResult GetByCount(int id)
+        public IActionResult GetByCount(int count)
         {
-            var result = _movieService.GetByCount(5);
+            var result = _movieService.GetByCount(count);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -80,6 +80,18 @@ namespace WebApi.Controllers
         public IActionResult GetByDirectorId(int director_id)
         {
             var result = _movieService.GetListByDirector(director_id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+        
+        [HttpGet("getlastmovies")]
+        public IActionResult GetLastReleased(int count)
+        {
+            var result = _movieService.GetLastReleased(count);
             if (result.Success)
             {
                 return Ok(result.Data);

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Core.Entities.Concrete;
+﻿using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Core.Utilities.Security.Jwt;
 using Entities.Dtos;
@@ -12,9 +9,8 @@ namespace Business.Abstract
     {
         IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password);
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
-        IResult UserExists(string email);
-        IDataResult<User>  GetByMail(string email);
-        IDataResult<User>  GetById(int id);
+        IDataResult<User> Update(UserForUpdateDto userForUpdateDto);
+
         IDataResult<AccessToken> CreateAccessToken(User user);
     }
 }

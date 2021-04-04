@@ -17,7 +17,6 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(m => m.GenreId).InclusiveBetween(3, 5);
             RuleFor(m => m.Name).Must(StartWithA);
         }
-
         private bool StartWithA(string args)
         {
             return args.StartsWith("A");

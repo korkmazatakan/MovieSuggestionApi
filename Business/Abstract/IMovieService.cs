@@ -15,6 +15,7 @@ namespace Business.Abstract
         IDataResult<List<Movie>> GetListByGenre(int genre_id);
         IDataResult<List<Movie>> GetListByDirector(int director_id);
         IDataResult<IList<Movie>> GetByCount(int count);
+        IDataResult<IList<Movie>> GetLastReleased(int count);
         IResult Add(Movie movie);
         IResult Delete(Movie movie);
         IResult Update(Movie movie);

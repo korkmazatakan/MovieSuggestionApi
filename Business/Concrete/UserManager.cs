@@ -6,36 +6,45 @@ using Business.Constants.Messages;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using Entities.Dtos;
 
 namespace Business.Concrete
 {
     public class UserManager:IUserService
     {
         private IUserDal _userDal;
-
         public UserManager(IUserDal userDal)
         {
             _userDal = userDal;
         }
-
         public List<OperationClaim> GetClaims(User user)
         {
             return new List<OperationClaim>(_userDal.GetClaims(user));
         }
-
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
 
-        public User GetByMail(string email)
+        public IResult Update(User user)
         {
-            return _userDal.Get(user => user.Email == email);
+            _userDal.Update(user);
+            return new SuccessResult(Messages.UserUpdated);
         }
-        public User GetById(int id)
+
+        public IDataResult<User> GetByMail(string email)
         {
-            return _userDal.Get(user => user.Id == id);
+            return new SuccessDataResult<User>(_userDal.Get(u => u.Email == email));
+        }
+        public IDataResult<User> GetById(int id)
+        {
+            var result = _userDal.Get(user => user.Id == id);
+            if (!result.Equals(null))
+            {
+                return new SuccessDataResult<User>(result);    
+            }
+            return new ErrorDataResult<User>(Messages.UserNotFound);
         }
     }
 }

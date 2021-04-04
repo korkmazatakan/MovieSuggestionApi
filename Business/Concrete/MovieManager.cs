@@ -61,7 +61,15 @@ namespace Business.Concrete
                 listOfMovie.Take(count).ToList());
         }
 
-       // [ValidationAspect(typeof(MovieValidator), Priority = 1)]
+        public IDataResult<IList<Movie>> GetLastReleased(int count)
+        {
+            List<Movie> listOfMovie = _movieDal.GetList().ToList();
+            listOfMovie.Sort((x, y) => DateTime.Compare(y.ReleaseDate , x.ReleaseDate));
+
+            return new SuccessDataResult<IList<Movie>>(listOfMovie.Take(count).ToList());
+        }
+
+        // [ValidationAspect(typeof(MovieValidator), Priority = 1)]
        // [CacheRemoveAspect("IMovieService.Get")]
       //  [SecuredOperation("Movie.Add")]
       //  [LogAspect()]

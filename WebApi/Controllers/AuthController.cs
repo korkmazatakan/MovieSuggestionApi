@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,12 +9,11 @@ namespace WebApi.Controllers
     public class AuthController : Controller
     {
         private IAuthService _authService;
-
+        private IUserService _userService;
         public AuthController(IAuthService authService)
         {
             _authService = authService;
         }
-
         [HttpPost("login")]
         public ActionResult Login(UserForLoginDto userForLoginDto)
         {
@@ -28,61 +22,35 @@ namespace WebApi.Controllers
             {
                 return BadRequest(userToLogin.Message);
             }
-
             var result = _authService.CreateAccessToken(userToLogin.Data);
             if (result.Success)
             {
                 return Ok(result.Data);
             }
-
             return BadRequest(result.Message);
-
         }
-
         [HttpPost("register")]
         public ActionResult Register(UserForRegisterDto userForRegisterDto)
         {
-            var userExist = _authService.UserExists(userForRegisterDto.Email);
-            if (!userExist.Success)
-            {
-                return BadRequest(userExist.Message);
-            }
-
             var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
-            var result = _authService.CreateAccessToken(registerResult.Data);
-
-            if (result.Success)
-            {
+            
+            if (registerResult.Success)
+            {            
+                var result = _authService.CreateAccessToken(registerResult.Data);
                 return Ok(result.Data);
             }
-
-            return BadRequest(result.Message);
+            return BadRequest(registerResult.Message);
         }
-        
-        [HttpGet("getbymail")]
-        public ActionResult GetByMail(string email)
+        [HttpPut("update")]
+        public ActionResult Update(UserForUpdateDto userForUpdateDto)
         {
-            var result = _authService.GetByMail(email);
-            if (result.Success)
-            {
+            var updateResult = _authService.Update(userForUpdateDto);
+            if (updateResult.Success)
+            {            
+                var result = _authService.CreateAccessToken(updateResult.Data);
                 return Ok(result.Data);
             }
-
-            return BadRequest(result.Message);
-
-        }
-        
-        [HttpGet("getbyid")]
-        public ActionResult GetById(int id)
-        {
-            var result = _authService.GetById(id);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-
-            return BadRequest(result.Message);
-
+            return BadRequest(updateResult.Message);
         }
     }
 }

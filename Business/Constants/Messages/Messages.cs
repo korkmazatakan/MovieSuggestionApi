@@ -15,6 +15,7 @@ namespace Business.Constants.Messages
         public static string MovieUpdated = "Movie updated successfuly";
         public static string MovieDeleted = "Movie deleted successfuly";
         public static string UserAdded = "User added successfuly";
+        public static string UserUpdated = "User updated successfuly";
         public static string UserNotFound = "User not found";
         public static string PasswordError = "Password is wrong";
         public static string SuccessfulLogin = "Login successfuly";
