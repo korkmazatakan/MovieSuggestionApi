@@ -6,6 +6,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Authorization;
+using Entities.Dtos;
+using Core.Utilities.Results;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace WebApi.Controllers
 {
@@ -14,10 +18,13 @@ namespace WebApi.Controllers
     public class DirectorsController : ControllerBase
     {
         private IDirectorService _directorService;
+        private IWebHostEnvironment _webHostEnvironment;
 
-        public DirectorsController(IDirectorService directorService)
+
+        public DirectorsController(IDirectorService directorService, IWebHostEnvironment webHostEnvironment)
         {
             _directorService = directorService;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [HttpGet ("getall")]
@@ -45,15 +52,48 @@ namespace WebApi.Controllers
         }
         [HttpPost("add")]
        // [Authorize(Roles = "Director.Add")]
-        public IActionResult Add(Director director)
+        public IActionResult Add([FromForm]DirectorAddDto director)
         {
-            var result = _directorService.Add(director);
-            if (result.Success)
+
+            IResult result = new SuccessResult();
+            try
             {
+                if (!director.Portre.Equals(null))
+                {
+                    string path = _webHostEnvironment.WebRootPath + "/uploads/directorcontent/posters/";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    Director nDirector = new Director();
+                    nDirector.Name = director.Name;
+                    nDirector.Description = director.Description;
+                    nDirector.Portre = Guid.NewGuid().ToString("N") + "." + director.Portre.FileName.Split(".")[1];
+
+                    using (FileStream fileStream = System.IO.File.Create(path + nDirector.Portre))
+                    {
+                        result = _directorService.Add(nDirector);
+                        director.Portre.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+                }
                 return Ok(result.Message);
             }
+            catch (Exception)
+            {
+                return BadRequest(result.Message);
+            }
 
-            return BadRequest(result.Message);
+
+
+
+            //var result = _directorService.Add(director);
+            //if (result.Success)
+            //{
+            //    return Ok(result.Message);
+            //}
+
+            //return BadRequest(result.Message);
         }
         [HttpPost("update")]
         public IActionResult Update(Director director)

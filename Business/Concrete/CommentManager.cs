@@ -37,6 +37,7 @@ namespace Business.Concrete
 
         public IResult Add(Comment comment)
         {
+
             _commentDal.Add(comment);
             return new SuccessResult(Messages.CommentAdded);
         }

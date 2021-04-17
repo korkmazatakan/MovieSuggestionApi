@@ -100,6 +100,18 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("gettopboxoffice")]
+        public IActionResult GetTopBoxOffice(int count)
+        {
+            var result = _movieService.GetTopBoxOffice(count);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
         [HttpPost("add")]
         public IActionResult Add([FromForm]MovieAddDto movie)
         {

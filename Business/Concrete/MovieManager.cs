@@ -119,15 +119,6 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
-        private IResult CheckMovieNameExist(string movieName)
-        {
-            if (_movieDal.Get(mv =>mv.Name == movieName) != null)
-            {
-                return new ErrorResult(Messages.MovieNameAlreadyExisted);
-            }
-
-            return new SuccessResult();
-        }
         private IResult CheckMovieExist(Movie movie)
         {
             if (_movieDal.Get(mv => mv.Name == movie.Name && mv.DirectorId == movie.DirectorId) != null)
@@ -138,5 +129,12 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<IList<Movie>> GetTopBoxOffice(int count)
+        {
+            List<Movie> listOfMovie = _movieDal.GetList().ToList();
+            listOfMovie.Sort((x, y) => y.BoxOffice.CompareTo(x.BoxOffice)) ;
+
+            return new SuccessDataResult<IList<Movie>>(listOfMovie.Take(count).ToList());
+        }
     }
 }

@@ -14,6 +14,7 @@ namespace Entities.Concrete
         public int DirectorId { get; set; }
         public int GenreId { get; set; }
         public string Poster { get; set; }
+        public Decimal BoxOffice { get; set; }
         public DateTime ReleaseDate { get; set; }
 
     }

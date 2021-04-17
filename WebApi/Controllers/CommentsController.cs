@@ -48,8 +48,8 @@ namespace WebApi.Controllers
             //getting current user
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
             // getting username of current user
-            var username = currentUser.Identity.IsAuthenticated ? currentUser.Identity.Name : "Ziyaretçi"; 
-            
+            var username = currentUser.Identity.IsAuthenticated ? currentUser.Identity.Name : "Ziyaretçi";
+
             // creating comment
             Comment nComment = new Comment();
             nComment.Text = comment.Text;
