@@ -9,6 +9,8 @@ namespace Entities.Concrete
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public DateTime BornAt { get; set; }
+        public string BornIn { get; set; }
         public string Description { get; set; }
         public string Portre { get; set; }
 

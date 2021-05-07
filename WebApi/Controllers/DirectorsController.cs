@@ -39,6 +39,17 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("search")]
+        public IActionResult Index(string searchQuery)
+        {
+            var result = _directorService.GetByQuery(searchQuery);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
         [HttpGet("getbyid")]
         public IActionResult GetById(int id)
         {
@@ -67,6 +78,8 @@ namespace WebApi.Controllers
                     }
                     Director nDirector = new Director();
                     nDirector.Name = director.Name;
+                    nDirector.BornAt = director.BornAt;
+                    nDirector.BornIn = director.BornIn;
                     nDirector.Description = director.Description;
                     nDirector.Portre = Guid.NewGuid().ToString("N") + "." + director.Portre.FileName.Split(".")[1];
 

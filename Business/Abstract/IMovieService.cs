@@ -21,6 +21,7 @@ namespace Business.Abstract
         IResult Delete(Movie movie);
         IResult Update(Movie movie);
         IResult TransactionTest(Movie movie);
+        IDataResult<IList<Movie>> GetByQuery(string searchQuery);
         
     }
 }

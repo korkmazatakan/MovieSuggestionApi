@@ -31,14 +31,25 @@ namespace Business.Concrete
             return new SuccessResult(Messages.DirectorDeleted);
         }
 
-        public IDataResult<List<Director>> GetAll()
+        public IDataResult<IList<Director>> GetAll()
         {
-            return new SuccessDataResult<List<Director>>(_directorDal.GetList().ToList());
+            return new SuccessDataResult<IList<Director>>(_directorDal.GetList().ToList());
         }
 
         public IDataResult<Director> GetById(int Id)
         {
             return new SuccessDataResult<Director>(_directorDal.Get(a => a.Id == Id));
+        }
+
+        public IDataResult<IList<Director>> GetByQuery(string searchQuery)
+        {
+            IList<Director> directors = null;
+
+            if (!String.IsNullOrEmpty(searchQuery))
+            {
+                directors = _directorDal.GetList(x => x.Name.Contains(searchQuery)).ToList();
+            }
+            return new SuccessDataResult<IList<Director>>(directors);
         }
 
         public IResult Update(Director director)

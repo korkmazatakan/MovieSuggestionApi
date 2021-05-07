@@ -40,6 +40,17 @@ namespace WebApi.Controllers
             return BadRequest(result.Message);
         }
 
+        [HttpGet("search")]
+        public IActionResult Index(string searchQuery)
+        {
+            var result = _movieService.GetByQuery(searchQuery);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
         [HttpGet("getbycount")]
         public IActionResult GetByCount(int count)
         {

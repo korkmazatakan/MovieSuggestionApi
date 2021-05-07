@@ -9,7 +9,6 @@ namespace WebApi.Controllers
     public class AuthController : Controller
     {
         private IAuthService _authService;
-        private IUserService _userService;
         public AuthController(IAuthService authService)
         {
             _authService = authService;

@@ -9,7 +9,8 @@ namespace Business.Abstract
     public interface IDirectorService 
     {
         IDataResult<Director> GetById(int id);
-        IDataResult<List<Director>> GetAll();
+        IDataResult<IList<Director>> GetAll();
+        IDataResult<IList<Director>> GetByQuery(string searchQuery);
         IResult Add(Director director);
         IResult Delete(Director director);
         IResult Update(Director director);

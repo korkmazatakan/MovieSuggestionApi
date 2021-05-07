@@ -136,5 +136,16 @@ namespace Business.Concrete
 
             return new SuccessDataResult<IList<Movie>>(listOfMovie.Take(count).ToList());
         }
+
+        public IDataResult<IList<Movie>> GetByQuery(string searchQuery)
+        {
+            List<Movie> movies = null;
+
+            if (!String.IsNullOrEmpty(searchQuery))
+            {
+                movies = _movieDal.GetList(x => x.Name.Contains(searchQuery)).ToList();
+            }
+            return new SuccessDataResult<IList<Movie>>(movies);
+        }
     }
 }
