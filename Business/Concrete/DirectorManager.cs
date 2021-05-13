@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using Business.Constants.Messages;
 using Core.Utilities.Results;
+using Core.Aspects.Autofac.Logging;
+using Core.Aspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Business.BusinessAspect.Autofac;
 
 namespace Business.Concrete
 {
@@ -19,18 +23,24 @@ namespace Business.Concrete
             _directorDal = directorDal;
         }
 
+        [CacheRemoveAspect("IDirectorService.Get")]
+        [SecuredOperation("Director.Add")]
+        [LogAspect()]
         public IResult Add(Director director)
         {
             _directorDal.Add(director);
             return new SuccessResult(Messages.DirectorAdded);
         }
-
+        [CacheRemoveAspect("IDirectorService.Get")]
+        [SecuredOperation("Director.Delete")]
+        [LogAspect()]
         public IResult Delete(Director director)
         {
             _directorDal.Delete(director);
             return new SuccessResult(Messages.DirectorDeleted);
         }
-
+        
+        [CacheAspect()]
         public IDataResult<IList<Director>> GetAll()
         {
             return new SuccessDataResult<IList<Director>>(_directorDal.GetList().ToList());
@@ -52,6 +62,9 @@ namespace Business.Concrete
             return new SuccessDataResult<IList<Director>>(directors);
         }
 
+        [CacheRemoveAspect("IDirectorService.Get")]
+        [SecuredOperation("Director.Update")]
+        [LogAspect()]
         public IResult Update(Director director)
         {
             _directorDal.Update(director);

@@ -10,6 +10,10 @@ using Entities.Dtos;
 using Core.Utilities.Results;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Core.Aspects.Autofac.Caching;
+using Business.BusinessAspect.Autofac;
+using Core.Aspects.Autofac.Logging;
+using Core.Aspects.Autofac;
 
 namespace WebApi.Controllers
 {
@@ -27,7 +31,7 @@ namespace WebApi.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet ("getall")]
+        [HttpGet("getall")]
         public IActionResult GetList()
         {
             var result = _directorService.GetAll();
@@ -61,8 +65,8 @@ namespace WebApi.Controllers
 
             return BadRequest(result.Message);
         }
+
         [HttpPost("add")]
-       // [Authorize(Roles = "Director.Add")]
         public IActionResult Add([FromForm]DirectorAddDto director)
         {
 
@@ -96,18 +100,9 @@ namespace WebApi.Controllers
             {
                 return BadRequest(result.Message);
             }
-
-
-
-
-            //var result = _directorService.Add(director);
-            //if (result.Success)
-            //{
-            //    return Ok(result.Message);
-            //}
-
-            //return BadRequest(result.Message);
         }
+
+        
         [HttpPost("update")]
         public IActionResult Update(Director director)
         {
@@ -119,6 +114,8 @@ namespace WebApi.Controllers
 
             return BadRequest(result.Message);
         }
+
+        
         [HttpPost("delete")]
         public IActionResult Delete(Director director)
         {

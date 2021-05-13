@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants.Messages;
+using Core.Aspects.Autofac.Logging;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,12 +23,16 @@ namespace Business.Concrete
         {
             return new List<OperationClaim>(_userDal.GetClaims(user));
         }
+
+        [SecuredOperation("User.Add")]
+        [LogAspect()]
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
-
+        [SecuredOperation("User.Update")]
+        [LogAspect()]
         public IResult Update(User user)
         {
             _userDal.Update(user);

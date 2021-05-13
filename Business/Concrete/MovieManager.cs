@@ -32,8 +32,7 @@ namespace Business.Concrete
         }
         //[PerformanceAspect(2)]
         //[SecuredOperation("Movie.List")]
-        [CacheAspect(5)]
-        [LogAspect()]
+        [CacheAspect()]
         public IDataResult<List<Movie>> GetAll() => new SuccessDataResult<List<Movie>>(_movieDal.GetList().ToList());
 
         public IDataResult<Movie> GetById(int Id)
@@ -41,13 +40,11 @@ namespace Business.Concrete
             return new SuccessDataResult<Movie>(_movieDal.Get(m => m.Id == Id));
         }
 
-        [LogAspect()]
         public IDataResult<List<Movie>> GetListByGenre(int GenreId)
         {
             return new SuccessDataResult<List<Movie>>(_movieDal.GetList(m => m.GenreId == GenreId).ToList());
         }
 
-        [LogAspect()]
         public IDataResult<List<Movie>> GetListByDirector(int DirectorId)
         {
             return new SuccessDataResult<List<Movie>>(_movieDal.GetList(m => m.DirectorId == DirectorId).ToList());
@@ -69,21 +66,13 @@ namespace Business.Concrete
             return new SuccessDataResult<IList<Movie>>(listOfMovie.Take(count).ToList());
         }
 
-        // [ValidationAspect(typeof(MovieValidator), Priority = 1)]
-       // [CacheRemoveAspect("IMovieService.Get")]
-      //  [SecuredOperation("Movie.Add")]
-      //  [LogAspect()]
-        /*[CacheRemoveAspect("IGenreService.Get")] You can use this aspect attribute how many times you want */
+        [ValidationAspect(typeof(MovieValidator), Priority = 1)]
+        [CacheRemoveAspect("IMovieService.Get")]
+        [SecuredOperation("Movie.Add")]
+        [LogAspect()]
+        /*[CacheRemoveAspect("IGenreService.Get")]*/ /* You can use this aspect attribute how many times you want */
         public IResult Add(Movie movie)
-      {
-          // Movie nMovie = new Movie();
-          // nMovie.Name = movie.Name;
-          // nMovie.Description = movie.Description;
-          // nMovie.DirectorId = movie.DirectorId;
-          // nMovie.GenreId = movie.GenreId;
-          // nMovie.Poster = movie.Poster;
-          // nMovie.ReleaseDate = movie.ReleaseDate;
-            
+      {     
             IResult result = BusinessRules.Run(CheckMovieExist(movie));
             if (result != null)
             {
@@ -91,10 +80,11 @@ namespace Business.Concrete
             }
             _movieDal.Add(movie);
             //movie id is taken
-
             return new SuccessResult(Messages.MovieAdded);
         }
 
+        [SecuredOperation("Movie.Delete")]
+        [CacheRemoveAspect("IMovieService.Get")]
         [LogAspect()]
         public IResult Delete(Movie movie)
         {
@@ -102,6 +92,8 @@ namespace Business.Concrete
             return new SuccessResult(Messages.MovieDeleted);
         }
 
+        [SecuredOperation("Movie.Update")]
+        [CacheRemoveAspect("IMovieService.Get")]
         [LogAspect()]
         public IResult Update(Movie movie)
         {
@@ -109,6 +101,9 @@ namespace Business.Concrete
             return new SuccessResult(Messages.MovieUpdated);
         }
 
+        [SecuredOperation("Movie.Delete")]
+        [CacheRemoveAspect("IMovieService.Get")]
+        [LogAspect()]
         [TransactionScopeAspect]
         public IResult TransactionTest(Movie movie)
         {

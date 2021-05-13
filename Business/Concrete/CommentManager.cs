@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Business.Abstract;
+using Business.BusinessAspect.Autofac;
 using Business.Constants.Messages;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
