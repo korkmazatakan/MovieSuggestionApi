@@ -143,6 +143,7 @@ namespace WebApi.Controllers
                         nMovie.Poster = Guid.NewGuid().ToString("N")  + "." + movie.PosterFile.FileName.Split(".")[1];
                         nMovie.DirectorId = movie.DirectorId;
                         nMovie.GenreId = movie.GenreId;
+                        nMovie.BoxOffice = movie.BoxOffice;
                         nMovie.ReleaseDate = movie.ReleaseDate;
                         
                         using (FileStream fileStream = System.IO.File.Create(path + nMovie.Poster))
@@ -158,16 +159,6 @@ namespace WebApi.Controllers
             {
                 return BadRequest(result.Message);
             }
-            
-/*
-            var result = _movieService.Add(movie);
-            if (result.Success)
-            {
-                return Ok(result.Message);
-            }
-
-            return BadRequest(result.Message);
-*/
         }
         [HttpPost("update")]
         public IActionResult Update(Movie movie)
