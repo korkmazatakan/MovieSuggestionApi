@@ -14,12 +14,9 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(m => m.Description).NotEmpty();
             RuleFor(m => m.Poster).NotEmpty();
             RuleFor(m => m.ReleaseDate).NotEmpty();
-            RuleFor(m => m.GenreId).InclusiveBetween(3, 5);
-            RuleFor(m => m.Name).Must(StartWithA);
+            RuleFor(m => m.DirectorId).NotEmpty();
+            RuleFor(m => m.GenreId).NotEmpty();
         }
-        private bool StartWithA(string args)
-        {
-            return args.StartsWith("A");
-        }
+
     }
 }
