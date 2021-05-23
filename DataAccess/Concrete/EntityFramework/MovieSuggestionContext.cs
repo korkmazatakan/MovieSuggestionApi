@@ -13,6 +13,7 @@ namespace DataAccess.Concrete.EntityFramework
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(@"Server=tcp:moviesuggestion.database.windows.net,1433;Initial Catalog=FilmOneri;Persist Security Info=False;User ID=otokon58;Password=selami58A.;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+             //optionsBuilder.UseSqlServer(@"Server=localhost,1433;Initial Catalog=FilmOneri;Persist Security Info=False;User ID=sa;Password=change_this_password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         public DbSet<Director> Directors { get; set; }
