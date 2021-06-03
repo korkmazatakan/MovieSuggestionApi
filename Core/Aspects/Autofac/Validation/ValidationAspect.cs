@@ -19,7 +19,6 @@ namespace Core.Aspects.Autofac.Validation
             {
                 throw new Exception(AspectMessages.WrongType);
             }
-
             _validatorType = validatorType;
         }
 

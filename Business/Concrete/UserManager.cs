@@ -23,15 +23,13 @@ namespace Business.Concrete
         {
             return new List<OperationClaim>(_userDal.GetClaims(user));
         }
-
-        [SecuredOperation("User.Add")]
+        
         [LogAspect()]
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult(Messages.UserAdded);
         }
-        [SecuredOperation("User.Update")]
         [LogAspect()]
         public IResult Update(User user)
         {

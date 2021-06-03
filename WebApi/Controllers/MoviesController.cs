@@ -161,15 +161,50 @@ namespace WebApi.Controllers
             }
         }
         [HttpPost("update")]
-        public IActionResult Update(Movie movie)
+        public IActionResult Update([FromForm]MovieUpdateDto movie)
         {
-            var result = _movieService.Update(movie);
+            /* var result = _movieService.Update(movie);
             if (result.Success)
             {
                 return Ok(result.Message);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result.Message); */
+            
+            IResult result = new SuccessResult();
+            try
+            {
+                if (!movie.PosterFile.Equals(null))
+                {
+                    string path = _webHostEnvironment.WebRootPath + "/uploads/moviecontent/posters/";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    Movie nMovie = new Movie();
+                    nMovie.Id = movie.Id;
+                    nMovie.Name = movie.Name;
+                    nMovie.Description = movie.Description;
+                    nMovie.Poster = Guid.NewGuid().ToString("N")  + "." + movie.PosterFile.FileName.Split(".")[1];
+                    nMovie.DirectorId = movie.DirectorId;
+                    nMovie.GenreId = movie.GenreId;
+                    nMovie.BoxOffice = movie.BoxOffice;
+                    nMovie.ReleaseDate = movie.ReleaseDate;
+                        
+                    using (FileStream fileStream = System.IO.File.Create(path + nMovie.Poster))
+                    {
+                        result = _movieService.Update(nMovie);
+                        movie.PosterFile.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+                }
+                return Ok(result.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest(result.Message);
+            }
+            
         }
         [HttpPost("delete")]
         public IActionResult Delete(Movie movie)

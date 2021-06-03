@@ -104,15 +104,47 @@ namespace WebApi.Controllers
 
         
         [HttpPost("update")]
-        public IActionResult Update(Director director)
+        public IActionResult Update([FromForm]DirectorUpdateDto director)
         {
-            var result = _directorService.Update(director);
+            /*var result = _directorService.Update(director);
             if (result.Success)
             {
                 return Ok(result.Message);
             }
 
-            return BadRequest(result.Message);
+            return BadRequest(result.Message);*/
+            IResult result = new SuccessResult();
+            try
+            {
+                if (!director.Portre.Equals(null))
+                {
+                    string path = _webHostEnvironment.WebRootPath + "/uploads/directorcontent/posters/";
+                    if (!Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(path);
+                    }
+                    Director nDirector = new Director();
+                    nDirector.Id = director.Id;
+                    nDirector.Name = director.Name;
+                    nDirector.BornAt = director.BornAt;
+                    nDirector.BornIn = director.BornIn;
+                    nDirector.Description = director.Description;
+                    nDirector.Portre = Guid.NewGuid().ToString("N") + "." + director.Portre.FileName.Split(".")[1];
+
+                    using (FileStream fileStream = System.IO.File.Create(path + nDirector.Portre))
+                    {
+                        result = _directorService.Update(nDirector);
+                        director.Portre.CopyTo(fileStream);
+                        fileStream.Flush();
+                    }
+                }
+                return Ok(result.Message);
+            }
+            catch (Exception)
+            {
+                return BadRequest(result.Message);
+            }
+            
         }
 
         

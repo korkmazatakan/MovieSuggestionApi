@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Mailing;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
@@ -20,6 +21,7 @@ namespace Business.Concrete
             _tokenHelper = tokenHelper;
         }
         [ValidationAspect(typeof(UserForRegisterValidator), Priority = 1)]
+        [MailAspect(Priority = 2)]
         public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
         {
             var userExist = UserExist(userForRegisterDto.Email);
@@ -41,6 +43,7 @@ namespace Business.Concrete
             }
             return new ErrorDataResult<User>(Messages.UserAlreadyExist);
         }
+        
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
