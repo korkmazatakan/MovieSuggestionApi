@@ -13,6 +13,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog.Context;
 
+using Microsoft.AspNetCore.HttpOverrides;
+using System.Net;
+
 namespace WebApi
 {
     public class Startup
@@ -34,6 +37,11 @@ namespace WebApi
                 options.AddPolicy("AllowOrigin",
                     builder => builder.AllowAnyOrigin());
             });
+
+	    services.Configure<ForwardedHeadersOptions>(options =>
+		{
+    		options.KnownProxies.Add(IPAddress.Parse("10.0.0.100"));
+		});
 
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -71,14 +79,18 @@ namespace WebApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
             }
 
+	    app.UseForwardedHeaders(new ForwardedHeadersOptions
+		{
+    			ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+		});
+
+
             app.UseStaticFiles();
 
             app.ConfigureCustomExceptionMiddleware();
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod());
+            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
             
-            app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseAuthentication();
