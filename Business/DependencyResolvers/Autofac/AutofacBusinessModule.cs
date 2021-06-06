@@ -23,6 +23,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<GenreManager>().As<IGenreService>();
             builder.RegisterType<EfGenreDal>().As<IGenreDal>();
 
+            builder.RegisterType<LanguageManager>().As<ILanguageService>();
+            builder.RegisterType<EfLanguageDal>().As<ILanguageDal>();
+
             builder.RegisterType<MovieManager>().As<IMovieService>();
             builder.RegisterType<EfMovieDal>().As<IMovieDal>();
 
