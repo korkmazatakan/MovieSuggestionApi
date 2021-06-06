@@ -143,6 +143,7 @@ namespace WebApi.Controllers
                         nMovie.Poster = Guid.NewGuid().ToString("N")  + "." + movie.PosterFile.FileName.Split(".")[1];
                         nMovie.DirectorId = movie.DirectorId;
                         nMovie.GenreId = movie.GenreId;
+                        nMovie.LanguageId = movie.LanguageId;
                         nMovie.BoxOffice = movie.BoxOffice;
                         nMovie.ReleaseDate = movie.ReleaseDate;
                         
@@ -188,6 +189,7 @@ namespace WebApi.Controllers
                     nMovie.Poster = Guid.NewGuid().ToString("N")  + "." + movie.PosterFile.FileName.Split(".")[1];
                     nMovie.DirectorId = movie.DirectorId;
                     nMovie.GenreId = movie.GenreId;
+                    nMovie.LanguageId = movie.LanguageId;
                     nMovie.BoxOffice = movie.BoxOffice;
                     nMovie.ReleaseDate = movie.ReleaseDate;
                         

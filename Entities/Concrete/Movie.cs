@@ -13,6 +13,7 @@ namespace Entities.Concrete
         public string Description { get; set; }
         public int DirectorId { get; set; }
         public int GenreId { get; set; }
+        public int LanguageId { get; set; }
         public string Poster { get; set; }
         public Decimal BoxOffice { get; set; }
         public DateTime ReleaseDate { get; set; }

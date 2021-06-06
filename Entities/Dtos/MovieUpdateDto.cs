@@ -11,6 +11,7 @@ namespace Entities.Dtos
         public string Description { get; set; }
         public int DirectorId { get; set; }
         public int GenreId { get; set; }
+        public int LanguageId { get; set; }
         public  long BoxOffice { get; set; }
         public DateTime ReleaseDate { get; set; }
         public IFormFile PosterFile { get; set; }
