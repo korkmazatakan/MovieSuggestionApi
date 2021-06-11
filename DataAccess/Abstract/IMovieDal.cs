@@ -8,5 +8,6 @@ namespace DataAccess.Abstract
 {
     public interface IMovieDal:IEntityRepository<Movie>
     {
+        public List<Movie> GetRandomMovie(int number);
     }
 }

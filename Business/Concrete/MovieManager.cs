@@ -34,6 +34,12 @@ namespace Business.Concrete
         //[SecuredOperation("Movie.List")]
         [CacheAspect()]
         public IDataResult<List<Movie>> GetAll() => new SuccessDataResult<List<Movie>>(_movieDal.GetList().ToList());
+        
+        [CacheAspect()]
+        public IDataResult<List<Movie>> GetRandom(int number)
+        {
+            return new SuccessDataResult<List<Movie>>(_movieDal.GetRandomMovie(number));
+        }
 
         public IDataResult<Movie> GetById(int Id)
         {

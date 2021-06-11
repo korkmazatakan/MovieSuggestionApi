@@ -39,6 +39,17 @@ namespace WebApi.Controllers
 
             return BadRequest(result.Message);
         }
+        [HttpGet("getrandom")]
+        public IActionResult GetRandom(int number)
+        {
+            var result = _movieService.GetRandom(number);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
 
         [HttpGet("search")]
         public IActionResult Index(string searchQuery)

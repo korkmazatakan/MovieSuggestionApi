@@ -11,6 +11,7 @@ namespace Business.Abstract
     public interface IMovieService
     {
         IDataResult<List<Movie>> GetAll();
+        IDataResult<List<Movie>> GetRandom(int number);
         IDataResult<Movie> GetById(int id);
         IDataResult<List<Movie>> GetListByGenre(int genre_id);
         IDataResult<List<Movie>> GetListByDirector(int director_id);
